@@ -1,5 +1,9 @@
 # ZFS
 
+1. Определение алгоритма  с наилучшим сжатием
+
+Список всех дисков в виртуалке:
+
 root@ubuntu-jammy:/# lsblk
 
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
@@ -32,7 +36,7 @@ sdi      8:128  0   512M  0 disk
 
 sdj      8:144  0   512M  0 disk
 
-
+Создание 4х пулов из 2х дисков в RAID1:
 
 root@ubuntu-jammy:/# zpool create nik1 mirror /dev/sdc /dev/sdd
 
@@ -42,3 +46,16 @@ root@ubuntu-jammy:/# zpool create nik3 mirror /dev/sdg /dev/sdh
 
 root@ubuntu-jammy:/# zpool create nik4 mirror /dev/sdi /dev/sdj
 
+Информация о пулах:
+
+root@ubuntu-jammy:/# zpool list
+
+NAME   SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+
+nik1   480M   105K   480M        -         -     0%     0%  1.00x    ONLINE  -
+
+nik2   480M   105K   480M        -         -     0%     0%  1.00x    ONLINE  -
+
+nik3   480M   100K   480M        -         -     0%     0%  1.00x    ONLINE  -
+
+nik4   480M   100K   480M        -         -     0%     0%  1.00x    ONLINE  -
