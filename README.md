@@ -156,6 +156,8 @@ zpoolexport/filea
 
 zpoolexport/fileb
 
+Проверим возможность импорта данного каталога в пул:
+
 root@ubuntu-jammy:/# zpool import -d zpoolexport/
 
    pool: otus
@@ -171,4 +173,69 @@ root@ubuntu-jammy:/# zpool import -d zpoolexport/
             /zpoolexport/filea  ONLINE
             /zpoolexport/fileb  ONLINE
 
+Делаем импорт данного пула:
+
 root@ubuntu-jammy:/# zpool import -d zpoolexport/ otus
+
+Размер:
+
+root@ubuntu-jammy:/# zfs get available otus
+
+NAME  PROPERTY   VALUE  SOURCE
+
+otus  available  350M   -
+
+Тип:
+
+root@ubuntu-jammy:/# zfs get readonly otus
+
+NAME  PROPERTY  VALUE   SOURCE
+
+otus  readonly  off     default
+
+Recordsize:
+
+root@ubuntu-jammy:/# zfs get recordsize otus
+
+NAME  PROPERTY    VALUE    SOURCE
+
+otus  recordsize  128K     local
+
+Сжатие:
+
+root@ubuntu-jammy:/# zfs get compression otus
+
+NAME  PROPERTY     VALUE           SOURCE
+
+otus  compression  zle             local
+
+Контрольная сумма:
+
+root@ubuntu-jammy:/# zfs get checksum otus
+
+NAME  PROPERTY  VALUE      SOURCE
+
+otus  checksum  sha256     local
+
+3. Работа со снапшотами
+
+Скачиваем файл:
+
+root@ubuntu-jammy:/# wget -O otus_task2.file --no-check-certificate https://drive.usercontent.google.com/download?id=1wgxjih8YZ-cqLqaZVa0lA3h3Y029c3oI&export=download
+
+Восстановим файловую систему из снапшота:
+
+root@ubuntu-jammy:/# zfs receive otus/test@today < otus_task2.file
+
+Ищем файл:
+
+root@ubuntu-jammy:/# find /otus/test -name "secret_message"
+
+/otus/test/task1/file_mess/secret_message
+
+Смотрим содержимое файла:
+
+root@ubuntu-jammy:/# cat /otus/test/task1/file_mess/secret_message
+
+https://otus.ru/lessons/linux-hl/
+
